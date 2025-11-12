@@ -1,162 +1,181 @@
-HR AI AGENT - Project Setup and Usage Guide
+# Crewbit
 
-===========================================================================================================================
-Prerequisites
-===========================================================================================================================
-
-1. Install the following software on your machine:
-
-   - Python 3.11 or higher: https://www.python.org/downloads/
-   - Node.js (LTS recommended) and npm: https://nodejs.org/
-   - Ollama platform CLI: https://ollama.com/docs/install
-     (Ensure Ollama CLI is added to your system PATH)
-
-2. Confirm installations by running in Command Prompt or PowerShell:
-
-   python --version
-   node --version
-   npm --version
-   ollama --version
-
-If any of these commands are not recognized, please install them or fix your PATH.
+A modular HR automation platform combining advanced AI (using FastAPI, LLMs/Ollama, and React) to answer employee queries and automate HR workflows.
 
 ---
 
-===========================================================================================================================
-Project Structure Overview
-===========================================================================================================================
+## Table of Contents
 
-HR-AI-AGENT/
+- [Project Overview](#project-overview)
+- [Prerequisites](#prerequisites)
+- [Project Structure Overview](#project-structure-overview)
+- [Setup Instructions](#setup-instructions)
+- [Running the Backends and Frontend](#running-the-backends-and-frontend)
+- [Using the Application](#using-the-application)
+- [Ollama Model Management Notes](#ollama-model-management-notes)
+- [Stopping the Application](#stopping-the-application)
+- [Features](#features)
+- [Support & Contributions](#support--contributions)
+- [License](#license)
+
+---
+
+## Project Overview
+
+The HR AI Agent streamlines HR operations by leveraging AI-driven natural language processing for instant answers, PDF policy search, and advanced sentiment analysis. Built with Python (FastAPI backend), Node.js (Express server, MongoDB), and React (frontend), it empowers HR teams and employees with a seamless policy query and knowledge management experience.
+
+---
+
+## Prerequisites
+
+1. Install **Python 3.11+**  
+   - [https://www.python.org/downloads/](https://www.python.org/downloads/)
+
+2. Install **Node.js (LTS) & npm**  
+   - [https://nodejs.org/](https://nodejs.org/)
+
+3. Install **Ollama CLI**  
+   - [https://ollama.com/docs/install](https://ollama.com/docs/install)  
+   - Ensure Ollama CLI is in your PATH.
+
+4. Confirm installations:
+
+python --version
+node --version
+npm --version
+ollama --version
+
+If not recognized, install or fix your PATH.
+
+---
+``` bash
+
+Crewbit/
 │
 ├── backend/
-│   ├── main.py                 # FastAPI backend, main AI API logic
-│   ├── requirements.txt        # Python dependencies for backend
-│   ├── hr_agent.py             # LLM officer logic, answer generator
-│   ├── sentiment.py            # Sentiment analysis pipeline
-│   ├── vectorstore.py          # Vector store utility functions
-│   ├── ...                     # Other backend Python files/modules
+│   ├── main.py               # FastAPI backend entry point
+│   ├── requirements.txt      # Python dependencies
+│   ├── hr_agent.py           # Core HR AI logic
+│   ├── sentiment.py          # Sentiment analysis module
+│   ├── vectorstore.py        # Vector database utilities
+│   └── ...                   # Additional backend modules
 │
 ├── frontend/
-│   ├── package.json            # React app dependencies
-│   ├── package-lock.json       # Locked versions for npm install
-│   ├── public/                 # Public assets (index.html, favicon, etc.)
-│   ├── src/                    # All React source code (components, pages, API logic)
-│   ├── README.md               # Frontend-specific README (optional)
-│   └── ...                     # Any other frontend files
+│   ├── package.json          # React app dependencies
+│   ├── package-lock.json     # Locked dependency versions
+│   ├── public/               # Static assets (index.html, favicon, etc.)
+│   ├── src/                  # React components, pages, and API calls
+│   └── README.md             # (Optional) frontend guide
 │
-├── setup.bat                   # Windows setup script: installs dependencies & Ollama models
-├── README.txt                  # Main project setup & usage instructions (this file)
-└── ...                         # (Add other top-level files here if needed)
+├── setup.bat                 # Windows setup script for dependencies & Ollama models
+└── README.md                 # Main setup and usage guide (this file)
 
 
+```
 ---
 
-===========================================================================================================================
-Setup Instructions
-===========================================================================================================================
+## Setup Instructions
 
-1. Open Command Prompt or PowerShell in the project root folder (HR-AI-AGENT/).
+1. Open Command Prompt or PowerShell in the project root:  
+   `HR-AI-AGENT/`
 
 2. Run the setup script:
+   - `.\setup.bat`    (PowerShell)
+   - `setup.bat`      (Command Prompt)
 
-   .\setup.bat    (if using PowerShell)
-   OR
-   setup.bat      (if using Command Prompt)
+3. The script will:
+   - Verify Ollama CLI is installed.
+   - Pull required Ollama models:
+       - llama3.2
+       - mxbai-embed-large
+   - Create a Python virtual environment at `backend/venv`.
+   - Install backend Python dependencies.
+   - Install frontend Node.js dependencies.
 
-3. What the script does:
-   - Verifies if Ollama CLI is installed.
-   - Pulls the required Ollama models:
-         - llama3.2
-         - mxbai-embed-large
-   - Creates a Python virtual environment in `backend/venv`.
-   - Installs all Python backend dependencies.
-   - Installs Node.js frontend dependencies.
-
-4. If prompted with any errors (like missing Ollama CLI), follow the instructions in the terminal to fix and rerun the script.
+4. If any errors occur (e.g., Ollama missing), follow on-screen instructions and rerun as needed.
 
 ---
 
-===========================================================================================================================
-Running the Backends and Frontend
-===========================================================================================================================
+## Running the Backends and Frontend
 
-### 1. FastAPI Backend Server (main AI API)
+### 1. FastAPI Backend Server (AI API)
 
-   a. Activate backend virtual environment:
+cd backend
+call venv\Scripts\activate
+uvicorn main:app --reload --port 9001
 
-      cd backend
-      call venv\Scripts\activate
+- Access at: http://localhost:9001
 
-   b. Run the FastAPI server:
+### 2. Express Backend with MongoDB
 
-      uvicorn main:app --reload --port 9001
+cd backend
+npm run dev
 
-   c. The AI backend will be running at: http://localhost:9001
-
----
-
-### 2. Express Backend with MongoDB 
-
-   a. Go to backend directory:
-
-      cd backend
-
-   b. Run the Mongo/Node server:
-
-      npm run dev
-
-   c. The Node backend will be running at: http://localhost:8000
-
----
+- Access at: http://localhost:8000
 
 ### 3. Frontend (React App)
 
-   a. In a new terminal window, start the frontend:
+cd frontend
+npm start
 
-      cd frontend
-      npm start
-
-   b. The React app will open automatically at: http://localhost:3000
+- App opens at: http://localhost:3000
 
 ---
 
-===========================================================================================================================
-Using the Application
-===========================================================================================================================
+## Using the Application
 
-- Access the app frontend at http://localhost:3000
-- Use the navigation buttons to:
-   - Upload multiple HR policy PDF files on the "HR Policy Upload" page.
-   - Ask questions on the "Employee Query" page and see chat history.
-- Uploaded PDFs are stored in `backend/policy_uploads/`
-- Embedded data (vector store) is saved in `backend/chrome_langchain_db/`
+- The app frontend: http://localhost:3000
+- Key navigation:
+  - Upload multiple HR policy PDFs (“HR Policy Upload” page)
+  - Query policies (“Employee Query” page)
+- Uploaded PDFs stored in: `backend/policy_uploads/`
+- Embedded data stored at: `backend/chrome_langchain_db/`
 
 ---
 
-===========================================================================================================================
-Ollama Model Management Notes
-===========================================================================================================================
+## Ollama Model Management Notes
 
-- Ollama platform and required models must be installed on the same machine running the backend(s).
-- These models are reused by the backend to embed and respond to queries.
-- You can list installed models by running:
+- Ollama CLI and required models must run on the backend server’s machine.
+- Models power vector search and answers.
+- List installed models:
 
-     ollama list
 
-- To update or add new models, use:
+- Pull/update models:
 
-     ollama pull <model-name>
+ollama pull <model-name>
 
-- For more info, visit: https://ollama.com/docs
+
+- More info: https://ollama.com/docs
 
 ---
 
-===========================================================================================================================
-Stopping the Application
-===========================================================================================================================
+## Stopping the Application
 
-- Stop any backend (FastAPI or Node) by pressing Ctrl+C in its terminal.
-- Stop frontend by pressing Ctrl+C in its terminal.
+- Stop any backend (FastAPI/Node) or frontend: **Ctrl+C** in its terminal.
+
+---
+
+## Features
+
+- Instant employee query support using advanced LLMs
+- PDF HR policy upload and search
+- Sentiment analysis for HR chat
+- Modular backend (FastAPI + Node)
+- React-based modern UI
+
+---
+
+## Support & Contributions
+
+- Contributions are welcome! Open issues or submit PRs for improvements.
+- For support, create a GitHub issue or contact your maintainer.
+
+---
+
+## License
+
+MIT License.  
+See `LICENSE` file for details.
 
 ---
 
